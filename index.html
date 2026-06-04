@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayar Chat</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, Geneva, sans-serif; }
+        body { display: flex; height: 100vh; background-color: #f0f2f5; }
+        .sidebar { width: 30%; border-left: 1px solid #ccc; background: #fff; display: flex; flex-direction: column; }
+        .chat-area { width: 70%; display: flex; flex-direction: column; background: #efeae2; }
+        .header { padding: 15px; background: #075e54; color: white; font-weight: bold; }
+        .user-list { flex: 1; overflow-y: auto; list-style: none; }
+        .user-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; }
+        .user-status { font-size: 12px; color: #777; }
+        .online { color: green !important; }
+        .messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px; border-radius: 8px; max-width: 60%; word-break: break-all; }
+        .msg.sent { background: #d9fdd3; align-self: flex-end; }
+        .msg.received { background: #fff; align-self: flex-start; }
+        .msg img { max-width: 100%; border-radius: 5px; margin-top: 5px; }
+        .input-area { padding: 10px; background: #f0f0f0; display: flex; gap: 10px; align-items: center; }
+        input[type="text"] { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px; outline: none; }
+        button { padding: 10px 20px; background: #00a884; color: white; border: none; border-radius: 20px; cursor: pointer; }
+        .auth-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; gap: 15px; }
+        .auth-screen input { padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 5px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <!-- صفحه ثبت نام با شماره -->
+    <div id="authScreen" class="auth-screen">
+        <h2>به Mayar Chat خوش آمدید</h2>
+        <input type="tel" id="phoneInput" placeholder="شماره موبایل (مثلا 0799123456)" required>
+        <button onclick="loginUser()">ورود / ثبت نام</button>
+    </div>
+
+    <!-- بخش اصلی برنامه چت -->
+    <div class="sidebar">
+        <div class="header">مخاطبین مایار چت</div>
+        <ul class="user-list" id="userList">
+            <!-- کاربران به صورت نمونه -->
+            <li class="user-item">
+                <strong>احمد</strong>
+                <div class="user-status online">● آنلاین</div>
+            </li>
+            <li class="user-item">
+                <strong>محمود</strong>
+                <div class="user-status">آخرین بازدید: ۱۰ دقیقه قبل</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="chat-area">
+        <div class="header" id="chatHeader">صفحه چت</div>
+        <div class="messages" id="messageArea">
+            <!-- پیام‌های نمونه -->
+            <div class="msg received">سلام، خوش آمدید!</div>
+            <div class="msg sent">سلام، تشکر.</div>
+        </div>
+        <div class="input-area">
+            <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="sendImage(this)">
+            <button onclick="document.getElementById('imageInput').click()">📷</button>
+            <input type="text" id="msgInput" placeholder="پیام خود را بنویسید...">
+            <button onclick="sendMessage()">ارسال</button>
+        </div>
+    </div>
+
+    <script>
+        // منطق اولیه فرانت‌اند برنامه
+        function loginUser() {
+            const phone = document.getElementById('phoneInput').value;
+            if(phone.trim() !== "") {
+                document.getElementById('authScreen').style.display = 'none';
+                alert("خوش آمدید با شماره: " + phone);
+            } else {
+                alert("لطفاً شماره موبایل خود را وارد کنید.");
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('msgInput');
+            if(input.value.trim() !== "") {
+                const msgArea = document.getElementById('messageArea');
+                const newMsg = document.createElement('div');
+                newMsg.className = 'msg sent';
+                newMsg.innerText = input.value;
+                msgArea.appendChild(newMsg);
+                input.value = "";
+                msgArea.scrollTop = msgArea.scrollHeight;
+            }
+        }
+
+        function sendImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const msgArea = document.getElementById('messageArea');
+                    const newMsg = document.createElement('div');
+                    newMsg.className = 'msg sent';
+                    newMsg.innerHTML = `<img src="${e.target.result}">`;
+                    msgArea.appendChild(newMsg);
+                    msgArea.scrollTop = msgArea.scrollHeight;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
+
