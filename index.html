@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ماشین حساب عبدالوهاب مایار</title>
+    <title>ماشین حساب MAYAR</title>
     <style>
         body {
             font-family: sans-serif;
@@ -31,6 +31,17 @@
             justify-content: space-between;
             padding: 25px;
             box-sizing: border-box;
+        }
+
+        /* نام شما در بالای صفحه نمایش */
+        .brand-name {
+            color: #29b6f6;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-top: 10px;
+            font-family: 'Arial Black', sans-serif;
         }
 
         /* صفحه نمایش ماشین حساب */
@@ -98,7 +109,7 @@
             color: #ffffff;
         }
 
-        /* نام شما در پایین صفحه */
+        /* نام کامل در فوتر پایین صفحه */
         .footer {
             text-align: center;
             font-size: 15px;
@@ -113,6 +124,9 @@
 
     <div class="phone-container">
         
+        <!-- نام برند شما در بالای صفحه نمایش ماشین حساب -->
+        <div class="brand-name">MAYAR</div>
+
         <!-- صفحه نمایش ریاضی -->
         <div class="display-container">
             <div class="expression" id="expression"></div>
@@ -147,7 +161,7 @@
             <button class="btn equal" onclick="calculate()">=</button>
         </div>
 
-        <!-- فوتر اختصاصی شما -->
+        <!-- فوتر پایین صفحه -->
         <div class="footer">
             عبدالوهاب مایار
         </div>
@@ -187,7 +201,6 @@
                 let exp = expressionDiv.innerText;
                 if (!exp) return;
                 
-                // جایگزین کردن علائم برای اجرای صحیح کد ریاضی
                 let formattedExp = exp.replace(/×/g, '*').replace(/÷/g, '/');
                 let res = eval(formattedExp);
                 
